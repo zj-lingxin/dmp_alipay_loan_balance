@@ -16,9 +16,11 @@ object Main extends Logging {
   }
 
   def handleArgs(args: Array[String])  = {
-    Constants.App.TIMESTAMP = args(0).toLong
-    //从外部传入的是秒级别的时间戳，所以要乘以1000
-    Constants.App.TODAY = DateUtils.timestampToStr(Constants.App.TIMESTAMP * 1000, "yyyyMM")
+    Constants.App.TODAY = DateUtils.timestampToStr(System.currentTimeMillis(), "yyyyMM")
+    Constants.Hadoop.JOBTRACKER_ADDRESS = args(0)
+    Constants.Hadoop.DEFAULT_FS = s"hdfs://${args(0)}"
+    Constants.InputPath.ALIPAY_ACCOUNT_TRADE = s"${Constants.InputPath.INPUT_DIR}/jsb/*${args(1)}/*"
+    Constants.OutputPath.RESULT = s"${Constants.OutputPath.OUTPUT_DIR}/${Constants.App.TODAY}/loan_balance/result${args(1)}"
   }
 
   private def runServices() {

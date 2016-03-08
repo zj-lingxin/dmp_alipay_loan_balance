@@ -5,10 +5,10 @@ import com.asto.dmp.alipay.dao.SQL
 import com.asto.dmp.alipay.util.Utils
 
 object BizDao extends scala.Serializable {
-  def getDistinctTrade = {
+/*  def getDistinctTrade = {
     BaseDao.getAccountTradeProps(SQL().select(Constants.Schema.DISTINCT_TRADE))
       .map(a => (a(0), a(1), a(2), a(3), a(4))).distinct()
-  }
+  }*/
 
   /**
    * 输出结果如下：
@@ -17,9 +17,10 @@ object BizDao extends scala.Serializable {
    * @return
    */
   def getOrderLoan = {
-    BaseDao.getDistinctTradeProps(SQL().select("owner_user_id,create_time,total_amount")
+    BaseDao.getAccountTradeProps(SQL().select("owner_user_id,create_time,total_amount")
       .where("in_out_type = 'in' and order_title like '%订单贷%'"))
       .map(a => ((a(0), a(1).substring(0, 7)), a(2).toDouble))
+      .distinct()
       .aggregateByKey(0D)((a, b) => a + b, (a, b) => a + b)
       .mapValues(v => Utils.retainDecimal(v / 800)) //保留两位小数，应该是除以100后再除以8。100是分转化为元的单位。8是业务需要
       .sortByKey()
@@ -32,8 +33,9 @@ object BizDao extends scala.Serializable {
    * ((2088102736808892,2015-03),25677.8)
    */
   def getOtherLoan(loanName: String) = {
-    val inOutRDD = BaseDao.getDistinctTradeProps(SQL().select("owner_user_id,create_time,in_out_type,total_amount").where(s"order_title like '%$loanName%'"))
+    val inOutRDD = BaseDao.getAccountTradeProps(SQL().select("owner_user_id,create_time,in_out_type,total_amount").where(s"order_title like '%$loanName%'"))
       .map(a => ((a(0), a(1).substring(0, 10), a(2)), a(3).toDouble))
+      .distinct()
       .aggregateByKey(0D)((a, b) => a + b, (a, b) => a + b)
       .persist()
     val inRDD = inOutRDD.filter(_._1._3 == "in").map(t => ((t._1._1, t._1._2), t._2))
