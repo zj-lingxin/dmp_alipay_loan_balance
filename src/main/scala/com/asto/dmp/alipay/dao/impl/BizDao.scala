@@ -7,7 +7,7 @@ import com.asto.dmp.alipay.util.Utils
 object BizDao extends scala.Serializable {
   def getDistinctTrade = {
     BaseDao.getAccountTradeProps(SQL().select(Constants.Schema.DISTINCT_TRADE))
-      .map(a => (a(0), a(1), a(2), a(3), a(4), a(5), a(6))).distinct()
+      .map(a => (a(0), a(1), a(2), a(3), a(4))).distinct()
   }
 
   /**
@@ -62,7 +62,7 @@ object BizDao extends scala.Serializable {
       i =>
         if (i + 1 < monthData.length && monthData(i)._1 == monthData(i + 1)._1) (("", ""), 0D)
         else ((userId, monthData(i)._1), Utils.retainDecimal(monthData(i)._2 / 100))
-    }.filter(_._1 !=("", ""))
+    }.filter(_._1 != ("", ""))
   }
 
   def getAllLoan = {
@@ -72,7 +72,7 @@ object BizDao extends scala.Serializable {
       getIteratorHead(t._2._2),
       getIteratorHead(t._2._3),
       getIteratorHead(t._2._4)))
-      .map(t => (t._1, t._2, t._3, t._4, t._5, t._6, t._3 + t._4 + t._5 + t._6))
+      .map(t => (t._1, t._2, t._3, t._4, t._5, t._6, Utils.retainDecimal(t._3 + t._4 + t._5 + t._6)))
       .sortBy(t => (t._1, t._2))
   }
 

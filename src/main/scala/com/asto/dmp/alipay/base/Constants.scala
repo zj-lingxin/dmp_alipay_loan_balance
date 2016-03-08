@@ -13,7 +13,7 @@ object Constants {
   }
 
   object Hadoop {
-    val JOBTRACKER_ADDRESS = "centos05:9000"
+    val JOBTRACKER_ADDRESS = "appcluster"
     val DEFAULT_FS = s"hdfs://$JOBTRACKER_ADDRESS"
   }
 

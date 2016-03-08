@@ -8,5 +8,6 @@ class ServiceImpl extends Service {
   override protected def runServices(): Unit = {
     FileUtils.saveAsTextFile(BizDao.getDistinctTrade, Constants.OutputPath.DISTINCT_TRADE)
     FileUtils.saveAsTextFile(BizDao.getAllLoan, Constants.OutputPath.RESULT)
+    FileUtils.deleteFilesInHDFS(Constants.OutputPath.DISTINCT_TRADE)
   }
 }
