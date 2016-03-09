@@ -34,7 +34,7 @@ object Constants {
   object OutputPath {
     val SEPARATOR = "\t"
     val OUTPUT_DIR = s"${Hadoop.DEFAULT_FS}/alipay_output/offline/text"
-    //val DISTINCT_TRADE = s"$OUTPUT_DIR/distinct_trade_temp/"
+    val DISTINCT_TRADE = s"$OUTPUT_DIR/distinct_trade_temp/"
     var RESULT: String = _
   }
 
@@ -43,7 +43,7 @@ object Constants {
     val ALIPAY_ACCOUNT_TRADE = "alipay_order_no,merchant_order_no,order_type,order_status,owner_user_id,owner_logon_id," +
       "owner_name,opposite_user_id,opposite_name,opposite_logon_id,partner_id,order_title,total_amount,service_charge," +
       "order_from,create_time,modified_time,in_out_type"
-   // val DISTINCT_TRADE = "owner_user_id,create_time,in_out_type,total_amount,order_title"
+    val DISTINCT_TRADE = "owner_user_id,create_time,in_out_type,total_amount,order_title"
   }
 
 }

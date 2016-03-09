@@ -28,7 +28,7 @@ object FileUtils extends Logging {
   def saveAsTextFile[T <: Product](rdd: RDD[T], savePath: String) = {
     deleteFilesInHDFS(savePath)
     logInfo(s"往${savePath}中写入信息")
-    rdd.map(_.productIterator.mkString(Constants.OutputPath.SEPARATOR)).coalesce(1).saveAsTextFile(savePath)
+    rdd.map(_.productIterator.mkString(Constants.OutputPath.SEPARATOR)).saveAsTextFile(savePath)
   }
 
   def saveAsTextFile(text: String, savePath: String) = {
